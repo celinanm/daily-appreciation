@@ -286,6 +286,28 @@
             updateCount();
             loadAppreciations();
             showToast('Sent to ' + userData.partnerName + '! 💜', 'success');
+            // Send data to Google Sheet
+fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+        connectionCode: userData.connectionCode,
+        from: userData.userName,
+        to: userData.partnerName,
+        appreciations: appreciations
+    }),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Data sent to Google Sheets:', data);
+})
+.catch(error => {
+    console.error('Error sending data:', error);
+    showToast('Error sending to Google Sheet', 'error');
+});
+
         }
 
         function loadPartnerAppreciations() {
