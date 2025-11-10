@@ -189,9 +189,13 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'appreciations_v2_';
+            const STORAGE_KEY = 'appreciations_v2_';
+            const API_URL = 'https://script.google.com/macros/s/AKfycbz6h-VQ2lqJlkMsACpCerV6U2mHgRHHsldKX_rHxbb3xdYAp1tXQUswhBWO-eWvgfOA/exec'; // 👈 paste your full URL here
+    
+            function init() {
+             const userData = localStorage.getItem('appreciationsUserData');
         
-        function init() {
+            function init() {
             const userData = localStorage.getItem('appreciationsUserData');
             if (userData) {
                 const data = JSON.parse(userData);
