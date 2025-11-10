@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Appreciations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        
+        <!-- Setup Section -->
+        <div id="setupSection" class="max-w-md mx-auto">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Daily Appreciations</h1>
+                <p class="text-gray-600">Share what you love about each other</p>
+            </div>
+            
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-sm border border-white/20">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                        <input 
+                            type="text" 
+                            id="userName"
+                            placeholder="Enter your name"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Partner's Name</label>
+                        <input 
+                            type="text" 
+                            id="partnerName"
+                            placeholder="Enter partner's name"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Connection Code</label>
+                        <input 
+                            type="text" 
+                            id="connectionCode"
+                            placeholder="Create a unique code (e.g., sunset2024)"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50 font-mono"
+                        />
+                        <p class="text-xs text-gray-500 mt-2">Both of you should use the same code to connect</p>
+                    </div>
+
+                    <button 
+                        onclick="saveSetup()"
+                        class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-4 rounded-xl font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                    >
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Hello, <span id="userNameDisplay"></span>! 👋</h1>
+                    <p class="text-gray-600 text-sm mt-1">Connected with <span id="partnerNameDisplay" class="font-medium"></span></p>
+                </div>
+                <button 
+                    onclick="showSettings()"
+                    class="p-3 hover:bg-white/50 rounded-xl transition-colors"
+                >
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column - Add Appreciations -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Today's Entry Card -->
+                    <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-sm border border-white/20">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 class="text-xl font-semibold text-gray-900">Today's Appreciations</h2>
+                                <p class="text-sm text-gray-600 mt-1">What do you appreciate about <span id="partnerNameDisplay2" class="font-medium"></span>?</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-purple-600" id="appreciationCount">0/5</div>
+                                <div class="text-xs text-gray-500">completed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <input type="text" id="app1" placeholder="Something you appreciate..." class="w-full px-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50" oninput="updateCount()" />
+                            <input type="text" id="app2" placeholder="Something you appreciate..." class="w-full px-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50" oninput="updateCount()" />
+                            <input type="text" id="app3" placeholder="Something you appreciate..." class="w-full px-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50" oninput="updateCount()" />
+                            <input type="text" id="app4" placeholder="Something you appreciate..." class="w-full px-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50" oninput="updateCount()" />
+                            <input type="text" id="app5" placeholder="Something you appreciate..." class="w-full px-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-base bg-white/50" oninput="updateCount()" />
+                        </div>
+
+                        <button 
+                            onclick="saveAndSend()"
+                            id="sendButton"
+                            class="w-full mt-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-4 rounded-xl font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                            Send to <span id="partnerNameDisplay3"></span>
+                        </button>
+                    </div>
+
+                    <!-- Your History -->
+                    <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-sm border border-white/20">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Your Appreciation History</h3>
+                        <div id="myAppreciationsList" class="space-y-4"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Partner's Appreciations -->
+                <div class="space-y-6">
+                    <!-- Refresh Card -->
+                    <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl p-6 text-white">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="font-semibold text-lg">From <span id="partnerNameDisplay4"></span></h3>
+                                <p class="text-sm text-white/80 mt-1">Latest appreciations</p>
+                            </div>
+                            <button 
+                                onclick="loadPartnerAppreciations()"
+                                class="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-3xl font-bold" id="partnerCount">0</div>
+                        <div class="text-sm text-white/80">appreciations received</div>
+                    </div>
+
+                    <!-- Partner's Appreciations List -->
+                    <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-white/20">
+                        <div id="partnerAppreciationsList" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-3xl p-8 max-w-md w-full">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Settings</h2>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-2">Connection Code</p>
+                        <p class="text-lg font-mono font-semibold text-gray-900" id="displayConnectionCode"></p>
+                    </div>
+                    <button 
+                        onclick="resetApp()"
+                        class="w-full bg-red-50 text-red-600 px-6 py-3 rounded-xl font-medium hover:bg-red-100 transition-colors"
+                    >
+                        Reset App
+                    </button>
+                    <button 
+                        onclick="hideSettings()"
+                        class="w-full bg-gray-100 text-gray-900 px-6 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 bg-white rounded-2xl shadow-lg border border-gray-200 px-6 py-4 flex items-center gap-3 z-50">
+        <div id="toastIcon"></div>
+        <p id="toastMessage" class="font-medium text-gray-900"></p>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'appreciations_v2_';
+        
+        function init() {
+            const userData = localStorage.getItem('appreciationsUserData');
+            if (userData) {
+                const data = JSON.parse(userData);
+                document.getElementById('setupSection').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userNameDisplay').textContent = data.userName;
+                document.getElementById('partnerNameDisplay').textContent = data.partnerName;
+                document.getElementById('partnerNameDisplay2').textContent = data.partnerName;
+                document.getElementById('partnerNameDisplay3').textContent = data.partnerName;
+                document.getElementById('partnerNameDisplay4').textContent = data.partnerName;
+                document.getElementById('displayConnectionCode').textContent = data.connectionCode;
+                loadAppreciations();
+                loadPartnerAppreciations();
+                updateCount();
+            }
+        }
+
+        function saveSetup() {
+            const userName = document.getElementById('userName').value.trim();
+            const partnerName = document.getElementById('partnerName').value.trim();
+            const connectionCode = document.getElementById('connectionCode').value.trim().toLowerCase();
+
+            if (!userName || !partnerName || !connectionCode) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (connectionCode.length < 4) {
+                showToast('Connection code must be at least 4 characters', 'error');
+                return;
+            }
+
+            const userData = { userName, partnerName, connectionCode };
+            localStorage.setItem('appreciationsUserData', JSON.stringify(userData));
+            
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userNameDisplay').textContent = userName;
+            document.getElementById('partnerNameDisplay').textContent = partnerName;
+            document.getElementById('partnerNameDisplay2').textContent = partnerName;
+            document.getElementById('partnerNameDisplay3').textContent = partnerName;
+            document.getElementById('partnerNameDisplay4').textContent = partnerName;
+            document.getElementById('displayConnectionCode').textContent = connectionCode;
+        }
+
+        function updateCount() {
+            let count = 0;
+            for (let i = 1; i <= 5; i++) {
+                if (document.getElementById('app' + i).value.trim()) count++;
+            }
+            document.getElementById('appreciationCount').textContent = count + '/5';
+        }
+
+        function saveAndSend() {
+            const userData = JSON.parse(localStorage.getItem('appreciationsUserData'));
+            const appreciations = [];
+            
+            for (let i = 1; i <= 5; i++) {
+                const value = document.getElementById('app' + i).value.trim();
+                if (value) appreciations.push(value);
+            }
+
+            if (appreciations.length === 0) {
+                showToast('Please add at least one appreciation', 'error');
+                return;
+            }
+
+            const entry = {
+                date: new Date().toISOString().split('T')[0],
+                timestamp: Date.now(),
+                appreciations: appreciations,
+                from: userData.userName
+            };
+
+            // Save to my entries
+            let myEntries = JSON.parse(localStorage.getItem('myAppreciations') || '[]');
+            myEntries = myEntries.filter(e => e.date !== entry.date);
+            myEntries.unshift(entry);
+            myEntries = myEntries.slice(0, 30);
+            localStorage.setItem('myAppreciations', JSON.stringify(myEntries));
+
+            // Save to shared storage for partner to read
+            const sharedKey = STORAGE_KEY + userData.connectionCode + '_' + userData.userName;
+            localStorage.setItem(sharedKey, JSON.stringify(myEntries));
+
+            // Clear inputs
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('app' + i).value = '';
+            }
+            
+            updateCount();
+            loadAppreciations();
+            showToast('Sent to ' + userData.partnerName + '! 💜', 'success');
+        }
+
+        function loadPartnerAppreciations() {
+            const userData = JSON.parse(localStorage.getItem('appreciationsUserData'));
+            const partnerKey = STORAGE_KEY + userData.connectionCode + '_' + userData.partnerName;
+            
+            const partnerEntries = JSON.parse(localStorage.getItem(partnerKey) || '[]');
+            localStorage.setItem('partnerAppreciations', JSON.stringify(partnerEntries));
+            
+            displayPartnerAppreciations();
+            if (partnerEntries.length > 0) {
+                showToast('Loaded latest from ' + userData.partnerName, 'success');
+            }
+        }
+
+        function loadAppreciations() {
+            const myEntries = JSON.parse(localStorage.getItem('myAppreciations') || '[]');
+            
+            // Display my appreciations
+            const myList = document.getElementById('myAppreciationsList');
+            if (myEntries.length === 0) {
+                myList.innerHTML = '<p class="text-gray-500 text-sm text-center py-8">No entries yet</p>';
+            } else {
+                myList.innerHTML = myEntries.slice(0, 7).map(entry => `
+                    <div class="border-l-4 border-purple-400 pl-4 py-2">
+                        <p class="text-sm font-medium text-gray-900 mb-2">${formatDate(entry.date)}</p>
+                        <ul class="space-y-1">
+                            ${entry.appreciations.map(app => `
+                                <li class="text-gray-700 text-sm">• ${app}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+            }
+
+            displayPartnerAppreciations();
+        }
+
+        function displayPartnerAppreciations() {
+            const partnerEntries = JSON.parse(localStorage.getItem('partnerAppreciations') || '[]');
+            
+            document.getElementById('partnerCount').textContent = partnerEntries.reduce((sum, e) => sum + e.appreciations.length, 0);
+
+            const partnerList = document.getElementById('partnerAppreciationsList');
+            if (partnerEntries.length === 0) {
+                partnerList.innerHTML = '<p class="text-gray-500 text-sm text-center py-8">No appreciations yet</p>';
+            } else {
+                partnerList.innerHTML = partnerEntries.slice(0, 7).map(entry => `
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4">
+                        <p class="text-sm font-medium text-gray-900 mb-2">${formatDate(entry.date)}</p>
+                        <ul class="space-y-1">
+                            ${entry.appreciations.map(app => `
+                                <li class="text-gray-700 text-sm">💜 ${app}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (date.toDateString() === today.toDateString()) {
+                return 'Today';
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return 'Yesterday';
+            } else {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toastIcon.innerHTML = '<svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            } else {
+                toastIcon.innerHTML = '<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            }
+            
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function showSettings() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function hideSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function resetApp() {
+            if (confirm('Are you sure? This will delete all your data.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Auto-refresh partner appreciations every 30 seconds
+        setInterval(loadPartnerAppreciations, 30000);
+
+        init();
+    </script>
+</body>
+</html>
